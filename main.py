@@ -1,8 +1,5 @@
-import ReadGameData
-import joinFiles
-import ModifyGameDataValues
-import TransposeRulesetConcepts
-import remove_non_important_concepts
+from data_formatting import ReadGameData, remove_non_important_concepts, ModifyGameDataValues, joinFiles, \
+    TransposeRulesetConcepts
 from pathlib import Path
 
 print('Starting')
