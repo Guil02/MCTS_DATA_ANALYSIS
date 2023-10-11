@@ -1,12 +1,17 @@
 # Monte Carlo tree search data analysis
 
-## authors
+This project aims to implement models that based on certain concepts of a game in the LUDII framework to determine what
+the best variation of MCTS is for that game.
+
+## Current State
+
+## Authors
 
 * **Bams Guillaume** - [Guillaume](https://github.com/Guil02) - Developer
-* **Persoon Max** - [tbd]() - Developer
-* **Rietjens Marco** - [tbd]() - Developer
-* **Sladić, Dimitar** - [tbd]() - Developer
-* **Stefanov Stefan** - [tbd]() - Developer
+* **Persoon Max** - [Max](https://github.com/MaxPersoon) - Developer
+* **Rietjens Marco** - [Marco](https://github.com/Rytjens) - Developer
+* **Sladić, Dimitar** - [Dimitar](https://github.com/Sladic) - Developer
+* **Stefanov Stefan** - [Stefan](https://github.com/StefanStefanov741) - Developer
 
 ## References
 
