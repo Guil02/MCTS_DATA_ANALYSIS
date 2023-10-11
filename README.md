@@ -5,6 +5,11 @@ the best variation of MCTS is for that game.
 
 ## Current State
 
+The project currently only consists of reading in provided data sets and manipulating them such as to have a useful data
+set. The resulting data sets themselves are too large to push to github so they are only accessible by run the code.
+This luckily does not take too long. To retrieve the data set you only need to run the [main.py](main.py) file. This
+will generate the data set into the
+
 ## Authors
 
 * **Bams Guillaume** - [Guillaume](https://github.com/Guil02) - Developer
