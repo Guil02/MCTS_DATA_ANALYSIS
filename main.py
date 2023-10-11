@@ -3,6 +3,8 @@ from data_formatting import ReadGameData, remove_non_important_concepts, ModifyG
 from pathlib import Path
 
 print('Starting')
+if not Path.is_dir(Path('new_csv')):
+    Path.mkdir(Path('new_csv'))
 run_consecutive = False
 print("Starting game collection into 1 file")
 if not Path.is_file(Path('new_csv/AllGames.csv')):
