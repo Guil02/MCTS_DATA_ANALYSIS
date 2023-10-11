@@ -27,7 +27,6 @@ def run():
     for i in tqdm(range(len(gameIDs))):
         df = read_file('data/Out/' + gameIDs['GameRulesetName'][i], gameIDs['GameRulesetName'][i], gameIDs['Id'][i], df)
 
-    print(df)
     df.write_csv('new_csv/AllGames.csv')
 
 
