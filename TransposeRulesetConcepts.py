@@ -5,7 +5,7 @@ import polars as pl
 # it such that the first column is every unique RulesetId and all the following columns are the concepts and their value
 
 def run():
-    data = pl.read_csv('data/ludii-database-files/RulesetConcepts.csv', infer_schema_length=None)
+    data = pl.read_csv('new_csv/RulesetConceptsImportant.csv', infer_schema_length=None)
     data = data.select(['RulesetId', 'ConceptId', 'Value'])
     data = data.sort('ConceptId')
     data = data.pivot(index='RulesetId', columns='ConceptId', values='Value')
