@@ -2,7 +2,7 @@ import polars as pl
 
 
 def run():
-    important_concepts = pl.read_csv('important_concepts.csv', infer_schema_length=None)
+    important_concepts = pl.read_csv('data/important_concepts.csv', infer_schema_length=None)
     concepts = pl.read_csv('data/ludii-database-files/Concepts.csv', infer_schema_length=None)
     remaining_concepts = important_concepts.join(concepts, left_on='TaxonomyString', right_on='TaxonomyString',
                                                  how='left')
