@@ -1,5 +1,9 @@
-from data_formatting import ReadGameData, remove_non_important_concepts, ModifyGameDataValues, joinFiles, \
-    TransposeRulesetConcepts
+import split_different_mcts_components
+import TransposeRulesetConcepts
+import joinFiles
+import ModifyGameDataValues
+import remove_non_important_concepts
+import ReadGameData
 from pathlib import Path
 
 print('Starting')
@@ -26,4 +30,8 @@ print("Starting to split agents and utilities into separate columns")
 if not Path.is_file(Path('new_csv/data_with_agents_split.csv')) or run_consecutive:
     run_consecutive = True
     ModifyGameDataValues.run()
+print("Starting to separate mcts components")
+if not Path.is_file(Path('new_csv/output_dataset.csv')) or run_consecutive:
+    run_consecutive = True
+    split_different_mcts_components.run()
 print('Done')
