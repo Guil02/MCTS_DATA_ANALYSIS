@@ -13,7 +13,7 @@ def run(conceptId=False):
     data = data.sort('ConceptId')
     if conceptId:
         data = data.select(['RulesetId', 'ConceptId', 'Value'])
-        data = data.pivot(index='RulesetId', columns='ConceptId', values='Value')
+        data = data.pivot(index='RulesetId', columns='ConceptId', values='Value', aggregate_function='first')
     else:
         data = data.select(['RulesetId', 'Name', 'Value'])
         data = data.pivot(index='RulesetId', columns='Name', values='Value', aggregate_function='first')
