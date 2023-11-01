@@ -16,7 +16,7 @@ def run(conceptId=False):
         data = data.pivot(index='RulesetId', columns='ConceptId', values='Value')
     else:
         data = data.select(['RulesetId', 'Name', 'Value'])
-        data = data.pivot(index='RulesetId', columns='Name', values='Value')
+        data = data.pivot(index='RulesetId', columns='Name', values='Value', aggregate_function='first')
     data.write_csv('new_csv/RulesetConceptsSorted.csv')
 
 
