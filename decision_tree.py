@@ -22,5 +22,4 @@ df_agent2 = df.select([
 df = pl.concat([df_agent1, df_agent2])
 
 df = df.group_by('GameRulesetName', 'Id', 'Expansion').agg(pl.sum('Utility').alias('Utility'))
-print(df)
-print(df.select('GameRulesetName').unique())
+df.write_csv('decision_tree_csv/expansion_data_grouped.csv')
