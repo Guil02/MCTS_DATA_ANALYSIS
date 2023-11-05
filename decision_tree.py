@@ -1,4 +1,9 @@
 import polars as pl
+from sklearn import tree
 
-df = pl.read_csv('decision_tree_csv/expansion_data_grouped.csv')
-print(df)
+X = pl.read_csv('decision_tree_csv/X_expansion.csv')
+y = pl.read_csv('decision_tree_csv/y_expansion.csv')
+
+clf = tree.DecisionTreeClassifier()
+clf = clf.fit(X, y)
+tree.plot_tree(clf)

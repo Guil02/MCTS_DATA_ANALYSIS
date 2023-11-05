@@ -59,3 +59,29 @@ df = df.drop("is_duplicate")
 print(df)
 
 df.write_csv('decision_tree_csv/expansion_data_grouped.csv')
+
+df = pl.read_csv('decision_tree_csv/expansion_data_grouped.csv')
+
+df = df.with_columns([
+    (df['Expansion'].str.replace('ProgressiveHistory', '0')
+     .str.replace('UCB1Tuned', '1')
+     .str.replace('UCB1GRAVE', '2')
+     .str.replace('UCB1', '3'))
+    .alias('Expansion_encoded'),
+])
+
+y = df.select(['Expansion_encoded'])
+
+df2 = pl.read_csv('new_csv/output_dataset.csv', infer_schema_length=None)
+df2 = df2.drop(['agent1_AI_type', 'agent1_Expansion',
+                'agent1_Exploration', 'agent1_Play-out',
+                'agent2_AI_type', 'agent2_Expansion',
+                'agent2_Exploration', 'agent2_Play-out',
+                'utility_agent1', 'utility_agent2'])
+
+df_temp = df.select(['Id'])
+X = df_temp.join(df2, on='Id', how='left').unique()
+X = X.drop(['Id', 'GameRulesetName'])
+
+y.write_csv('decision_tree_csv/y_expansion.csv')
+X.write_csv('decision_tree_csv/X_expansion.csv')
