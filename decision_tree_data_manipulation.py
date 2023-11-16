@@ -46,8 +46,8 @@ df_filtered = df_with_max_utility.filter(
 
 df = df_filtered.select(['GameRulesetName', 'Id', 'Expansion', 'Utility'])
 
-print(df.shape)
-print(df.select(['Id']).unique())
+# print(df.shape)
+# print(df.select(['Id']).unique())
 
 df = df.with_columns(pl.col('GameRulesetName').is_duplicated().alias("is_duplicate"))
 
@@ -56,7 +56,7 @@ df = df.filter(pl.col("is_duplicate") == False)
 # Drop the 'is_duplicate' column as it's no longer needed
 df = df.drop("is_duplicate")
 
-print(df)
+# print(df)
 
 df.write_csv('decision_tree_csv/expansion_data_grouped.csv')
 
@@ -82,6 +82,9 @@ df2 = df2.drop(['agent1_AI_type', 'agent1_Expansion',
 df_temp = df.select(['Id'])
 X = df_temp.join(df2, on='Id', how='left').unique()
 X = X.drop(['Id', 'GameRulesetName'])
+
+columns_to_drop = [col for col in X.columns if X[col].unique().shape[0] == 1]
+X = X[columns_to_drop]
 
 y.write_csv('decision_tree_csv/y_expansion.csv')
 X.write_csv('decision_tree_csv/X_expansion.csv')
