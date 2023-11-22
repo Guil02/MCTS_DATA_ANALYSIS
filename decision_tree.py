@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 X = pl.read_csv('decision_tree_csv/X_expansion.csv')
 y = pl.read_csv('decision_tree_csv/y_expansion.csv')
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
 clf = tree.DecisionTreeClassifier()
 clf = clf.fit(X_train, y_train)
 tree.plot_tree(clf)
