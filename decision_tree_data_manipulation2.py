@@ -43,7 +43,8 @@ for index, row in df.iterrows():
         df.at[index, 'utility_agent1'], df.at[index, 'utility_agent2'] = row['utility_agent2'], row['utility_agent1']
 
 #List of columns to drop
-columns_to_drop = ["GameRulesetName", "Id"]
+#columns_to_drop = ["GameRulesetName", "Id","agent1_Exploration","agent1_Play-out","agent2_Exploration","agent2_Play-out"]  #Expansion Only
+columns_to_drop = ["GameRulesetName", "Id"]   #Combined
 
 #Drop the specified columns
 df = df.drop(columns=columns_to_drop)
