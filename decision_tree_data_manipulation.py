@@ -83,7 +83,7 @@ df_temp = df.select(['Id'])
 X = df_temp.join(df2, on='Id', how='left').unique()
 X = X.drop(['Id', 'GameRulesetName'])
 
-columns_to_drop = [col for col in X.columns if X[col].unique().shape[0] == 1]
+columns_to_drop = [col for col in X.columns if X[col].unique().shape[0] != 1]
 X = X[columns_to_drop]
 
 y.write_csv('decision_tree_csv/y_expansion.csv')
