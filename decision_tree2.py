@@ -1,11 +1,11 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import precision_score, recall_score, accuracy_score
 import numpy as np
 
 #Load your dataset
-df = pd.read_csv('new_csv/filtered_file.csv')
+df = pd.read_csv('new_csv/filtered_file_Combined.csv')
 
 #Identify and one-hot encode categorical columns
 categorical_cols = df.select_dtypes(include=['object']).columns
@@ -43,6 +43,12 @@ y_pred = v_custom_round(y_pred)
 #Evaluate the model
 accuracy = accuracy_score(y_val.values.flatten(), y_pred.flatten())
 print(f'Accuracy: {accuracy}')
+#Compute precision and recall
+precision = precision_score(y_val.values.flatten(), y_pred.flatten(), average='weighted')
+recall = recall_score(y_val.values.flatten(), y_pred.flatten(), average='weighted')
+
+print(f'Precision: {precision}')
+print(f'Recall: {recall}')
 
 '''
 #Print predictions from the validation set
