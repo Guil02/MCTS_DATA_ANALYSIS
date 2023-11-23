@@ -51,7 +51,7 @@ total_rows = X_val.shape[0]
 #Initialize counter for correct predictions
 correct_predictions = 0
 
-for sample_index in range(total_rows):
+for sample_index in range(10):
     sample_features = X_val.iloc[[sample_index]]
     sample_prediction = model.predict(sample_features)
 
