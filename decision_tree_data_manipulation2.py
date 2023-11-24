@@ -16,12 +16,6 @@ single_value_columns = df.columns[df.nunique() == 1]
 #Drop columns with only one unique value
 df = df.drop(columns=single_value_columns)
 
-#Identify the columns to group by by excluding 'utility_agent1' and 'utility_agent2'
-#group_columns = [col for col in df.columns if col not in ['utility_agent1', 'utility_agent2']]
-
-#Group by the similar columns and average 'utility_agent1' and 'utility_agent2' for those rows
-#df = df.groupby(group_columns, as_index=False)[['utility_agent1', 'utility_agent2']].mean()
-
 #Remove rows that dont have the same Exploration and play out values for both their agents
 #condition = (df['agent1_Play-out'] == df['agent2_Play-out']) & (df['agent1_Exploration'] == df['agent2_Exploration'])
 #df = df[condition]
@@ -42,12 +36,21 @@ for index, row in df.iterrows():
         df.at[index, 'agent1_Expansion'], df.at[index, 'agent2_Expansion'] = row['agent2_Expansion'], row['agent1_Expansion']
         df.at[index, 'utility_agent1'], df.at[index, 'utility_agent2'] = row['utility_agent2'], row['utility_agent1']
 
+#Identify the columns to group by by excluding 'utility_agent1' and 'utility_agent2'
+group_columns = [col for col in df.columns if col not in ['utility_agent1', 'utility_agent2']]
+
+#Group by the similar columns and average 'utility_agent1' and 'utility_agent2' for those rows
+df = df.groupby(group_columns, as_index=False)[['utility_agent1', 'utility_agent2']].mean()
+
 #List of columns to drop
-#columns_to_drop = ["GameRulesetName", "Id","agent1_Exploration","agent1_Play-out","agent2_Exploration","agent2_Play-out"]  #Expansion Only
-columns_to_drop = ["GameRulesetName", "Id"]   #Combined
+#columns_to_drop = ["GameRulesetName", "Id","agent1_Exploration","agent1_Play-out","agent2_Exploration","agent2_Play-out", "utility_agent2"]  #Expansion Only
+columns_to_drop = ["GameRulesetName", "Id","utility_agent2"]   #Combined
 
 #Drop the specified columns
 df = df.drop(columns=columns_to_drop)
 
+# Set utility to 1 -1 or 0 depending on threshold (0.2|-0.2)
+df['utility_agent1'] = df['utility_agent1'].apply(lambda x: 1 if x > 0 else (-1 if x < 0 else 0))
+
 #Save the result DataFrame to a CSV file
-df.to_csv("new_csv/filtered_file.csv", index=False)
+df.to_csv("new_csv/filtered_file_Combined.csv", index=False)
