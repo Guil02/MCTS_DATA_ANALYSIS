@@ -29,11 +29,11 @@ y_pred = model.predict(X_val)
 
 #Evaluate the model
 accuracy = accuracy_score(y_val.values.flatten(), y_pred.flatten())
-print(f'Accuracy: {accuracy}')
+print(f'Accuracy (Decision Tree): {accuracy}')
 #Compute precision and recall
 precision = precision_score(y_val.values.flatten(), y_pred.flatten(), average='weighted')
 
-print(f'Precision: {precision}')
+#print(f'Precision: {precision}')
 
 '''
 #Print predictions from the validation set
