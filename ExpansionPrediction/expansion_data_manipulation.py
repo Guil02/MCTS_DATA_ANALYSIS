@@ -51,5 +51,4 @@ df = df.drop(columns=columns_to_drop)
 #Set utility to 1 -1 or 0 depending on threshold (0.2|-0.2)
 df['utility_agent1'] = df['utility_agent1'].apply(lambda x: 1 if x > 0 else (-1 if x < 0 else 0))
 
-#Save the result DataFrame to a CSV file
 df.to_csv("ExpansionPrediction/filtered_data_Expansion.csv", index=False)

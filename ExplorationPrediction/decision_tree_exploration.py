@@ -5,7 +5,7 @@ from sklearn.metrics import precision_score, recall_score, accuracy_score
 import numpy as np
 
 #Load your dataset
-df = pd.read_csv('ExplorationPrediction/filtered_data_Exploration.csv')
+df = pd.read_csv('ExplorationPrediction/filtered_data_Exploration_01.csv')
 
 #Identify and one-hot encode categorical columns
 categorical_cols = df.select_dtypes(include=['object']).columns

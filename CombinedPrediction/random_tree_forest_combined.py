@@ -4,9 +4,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 import numpy as np
 
-
-#Load your dataset
-df = pd.read_csv('CombinedPrediction/filtered_data_Combined.csv')
+df = pd.read_csv('CombinedPrediction/filtered_data_Combined_01.csv')
 
 #Identify and one-hot encode categorical columns
 categorical_cols = df.select_dtypes(include=['object']).columns

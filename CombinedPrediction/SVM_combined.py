@@ -3,8 +3,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score
 
-#Load your dataset
-df = pd.read_csv('CombinedPrediction/filtered_data_Combined.csv')
+df = pd.read_csv('CombinedPrediction/filtered_data_Combined_01.csv')
 
 #Identify and one-hot encode categorical columns
 categorical_cols = df.select_dtypes(include=['object']).columns

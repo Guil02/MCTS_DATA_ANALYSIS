@@ -4,8 +4,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import precision_score, recall_score, accuracy_score
 import numpy as np
 
-#Load your dataset
-df = pd.read_csv('ExpansionPrediction/filtered_data_Expansion.csv')
+df = pd.read_csv('ExpansionPrediction/filtered_data_Expansion_01.csv')
 
 #Identify and one-hot encode categorical columns
 categorical_cols = df.select_dtypes(include=['object']).columns

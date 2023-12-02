@@ -4,9 +4,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 import numpy as np
 
-
-#Load your dataset
-df = pd.read_csv('ExplorationPrediction/filtered_data_Exploration.csv')
+df = pd.read_csv('ExplorationPrediction/filtered_data_Exploration_01.csv')
 
 #Identify and one-hot encode categorical columns
 categorical_cols = df.select_dtypes(include=['object']).columns
@@ -32,7 +30,7 @@ y_pred = model.predict(X_val)
 accuracy = accuracy_score(y_val.values.flatten(), y_pred.flatten())
 print(f'Accuracy (Random Forest): {accuracy}')
 
-
+'''
 #Print predictions from the validation set
 total_rows = X_val.shape[0]
 
@@ -55,3 +53,4 @@ for sample_index in range(10):
 
 #Print the total number of correct predictions
 print(f'\nTotal Correct Predictions: {correct_predictions} out of {total_rows}')
+'''
