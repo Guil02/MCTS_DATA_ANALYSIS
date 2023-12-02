@@ -52,4 +52,4 @@ df = df.drop(columns=columns_to_drop)
 df['utility_agent1'] = df['utility_agent1'].apply(lambda x: 1 if x > 0 else (-1 if x < 0 else 0))
 
 #Save the result DataFrame to a CSV file
-df.to_csv("DecisionTreePlayout/filtered_data_Playout", index=False)
+df.to_csv("PlayoutPrediction/filtered_data_Playout", index=False)
