@@ -2,7 +2,7 @@ import polars as pl
 
 
 def run():
-    df = pl.read_csv('new_csv/data_with_agents_split.csv', infer_schema_length=None)
+    df = pl.read_csv('../new_csv/data_with_agents_split.csv', infer_schema_length=None)
     agents = ['agent1', 'agent2']
     for agent in agents:
         df = df.with_columns(
@@ -37,7 +37,7 @@ def run():
 
     df = pl.from_pandas(df)
     print(df)
-    df.write_csv('new_csv/output_dataset.csv')
+    df.write_csv('../new_csv/output_dataset.csv')
 
 
 if __name__ == '__main__':

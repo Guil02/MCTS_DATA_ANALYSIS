@@ -2,7 +2,7 @@ import polars as pl
 
 
 def run():
-    df = pl.read_csv('new_csv/AllGamesWithRulesetConcepts.csv', infer_schema_length=None)
+    df = pl.read_csv('../new_csv/AllGamesWithRulesetConcepts.csv', infer_schema_length=None)
 
     df = df.with_columns(
         [
@@ -31,7 +31,7 @@ def run():
 
     df = pl.from_pandas(df)
 
-    df.write_csv('new_csv/data_with_agents_split.csv')
+    df.write_csv('../new_csv/data_with_agents_split.csv')
 
 
 if __name__ == '__main__':
