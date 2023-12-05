@@ -3,7 +3,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.metrics import accuracy_score
 
-df = pd.read_csv('PlayoutPrediction/filtered_data_Playout_01.csv')
+df = pd.read_csv('PlayoutPrediction/filtered_data_Playout_1-1.csv')
 
 #Identify and one-hot encode categorical columns
 categorical_cols = df.select_dtypes(include=['object']).columns
