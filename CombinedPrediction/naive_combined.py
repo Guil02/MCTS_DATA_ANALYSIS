@@ -4,7 +4,7 @@ from sklearn.dummy import DummyClassifier
 from sklearn.metrics import accuracy_score
 
 
-df = pd.read_csv('CombinedPrediction/filtered_data_Combined.csv')
+df = pd.read_csv('CombinedPrediction/filtered_data_Combined_01.csv')
 
 #Identify and one-hot encode categorical columns
 categorical_cols = df.select_dtypes(include=['object']).columns
@@ -32,12 +32,12 @@ accuracy_naive = accuracy_score(y_val.values.flatten(), y_pred_naive.flatten())
 print(f'Accuracy (Naive Model): {accuracy_naive}')
 """
 
-# Set up k-fold cross-validation
+#Set up k-fold cross-validation
 kfold = KFold(n_splits=10, shuffle=True)
 
-# Make predictions using cross-validation
+#Make predictions using cross-validation
 y_pred_naive = cross_val_predict(naive_model, X, y.values.flatten(), cv=kfold)
 
-# Evaluate the naive model
+#Evaluate the naive model
 accuracy_naive = accuracy_score(y.values.flatten(), y_pred_naive)
 print(f'Average Accuracy (Naive Model): {accuracy_naive}')
