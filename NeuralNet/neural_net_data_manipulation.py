@@ -24,13 +24,8 @@ df = pd.read_csv('neural_net_csv/base_data.csv')
 
 index_columns = df.columns[(df.columns != 'Unnamed: 0') & (df.columns != 'utility_agent1') & (df.columns != 'utility_agent2')]
 
-print(index_columns.to_numpy())
-print(['GameRulesetName', 'Id',
-                 'agent1_Expansion', 'agent1_Exploration', 'agent1_Play-out',
-                 'agent2_Expansion', 'agent2_Exploration', 'agent2_Play-out'])
-
-# df_grouped = pd.pivot_table(df, values='utility_agent2', index=index_columns.to_numpy(),
-#                             columns = ['utility_agent1'], aggfunc={'utility_agent2': 'count'}, fill_value=0)
+df_grouped = pd.pivot_table(df, values='utility_agent2', index=index_columns.to_list(),
+                            columns = ['utility_agent1'], aggfunc={'utility_agent2': 'count'}, fill_value=0)
 
 # df_grouped = pd.pivot_table(df, values='utility_agent2', index=['GameRulesetName', 'Id',
 #                  'agent1_Expansion', 'agent1_Exploration', 'agent1_Play-out',
@@ -46,11 +41,11 @@ df_grouped['Win_Chance'] = (df_grouped['Wins'] + 0.5*df_grouped['Draws'])/df_gro
 
 print(df_grouped)
 
-# print(df_grouped['Games'].value_counts().sort_index(ascending=False))
+print(df_grouped['Games'].value_counts().sort_index(ascending=False))
 
-# df_grouped.to_csv('neural_net_csv/grouped_data.csv')
-#
-# df_grouped = pd.read_csv('neural_net_csv/grouped_data.csv')
+df_grouped.to_csv('neural_net_csv/grouped_data.csv')
+
+df_grouped = pd.read_csv('neural_net_csv/grouped_data.csv')
 
 # df_agent1_win_chance = df_grouped.groupby(['agent1_Expansion', 'agent1_Exploration', 'agent1_Play-out'])\
 #     .agg({'Games': ['sum'], 'Win_Chance': ['mean']}).reset_index()
