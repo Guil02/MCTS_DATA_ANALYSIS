@@ -11,10 +11,10 @@ df = df[~(df['agent1_AI_type'].str.lower().str.contains('random') | df['agent2_A
 df = df.loc[df['NumPlayers'] == 2.0]
 
 #Find columns with only one unique value
-single_value_columns = df.columns[df.nunique() == 1]
+#single_value_columns = df.columns[df.nunique() == 1]
 
 #Drop columns with only one unique value
-df = df.drop(columns=single_value_columns)
+#df = df.drop(columns=single_value_columns)
 
 #Remove rows that dont have the same Exploration and play out values for both their agents
 #condition = (df['agent1_Play-out'] == df['agent2_Play-out']) & (df['agent1_Exploration'] == df['agent2_Exploration'])

@@ -1,10 +1,10 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.tree import DecisionTreeClassifier  
 from sklearn.metrics import precision_score, recall_score, accuracy_score
 import numpy as np
 
-df = pd.read_csv('CombinedPrediction/filtered_data_Combined01.csv')
+df = pd.read_csv('CombinedPrediction/filtered_data_Combined_01.csv')
 
 #Identify and one-hot encode categorical columns
 categorical_cols = df.select_dtypes(include=['object']).columns
@@ -33,7 +33,7 @@ print(f'Accuracy (Decision Tree): {accuracy}')
 precision = precision_score(y_val.values.flatten(), y_pred.flatten(), average='weighted')
 
 #print(f'Precision: {precision}')
-
+"""
 #Print predictions from the validation set
 total_rows = X_val.shape[0]
 
@@ -56,3 +56,4 @@ for sample_index in range(10):
 
 #Print the total number of correct predictions
 print(f'\nTotal Correct Predictions: {correct_predictions} out of {total_rows}')
+"""
