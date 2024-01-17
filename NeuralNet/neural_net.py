@@ -4,6 +4,8 @@ from matplotlib import pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 import tensorflow as tf
+from keras import backend as K
+from keras.src.metrics import Metric
 
 # Ensure TensorFlow is using GPU if available
 physical_devices = tf.config.list_physical_devices('GPU')
@@ -11,7 +13,7 @@ if physical_devices:
     tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
 # Load the data
-df = pd.read_csv(r'C:\Users\mjhri\PycharmProjects\MCTS_DATA_ANALYSIS\NeuralNet\neural_net_csv\normalized_data.csv')
+df = pd.read_csv('../neural_net_csv/normalized_data.csv')
 
 # Include game concepts and pair by ID
 # Assuming columns like 'GameConcept1', 'GameConcept2', etc., and 'GameID'
@@ -35,23 +37,81 @@ print(X_train.shape[1])
 # Define the model
 model = tf.keras.models.Sequential([
     tf.keras.layers.Dense(128, activation='relu', input_shape=(X_train.shape[1],)),
+    # tf.keras.layers.Dropout(0.3),
+    # tf.keras.layers.Dense(64, activation='relu'),
     tf.keras.layers.Dropout(0.3),
     tf.keras.layers.Dense(64, activation='relu'),
     tf.keras.layers.Dropout(0.3),
-    tf.keras.layers.Dense(64, activation='relu'),
     tf.keras.layers.Dense(32, activation='relu'),
     tf.keras.layers.Dense(1, activation='sigmoid')  # Assuming binary classification
 ])
 
+
+class RegretMetric(Metric):
+    def __init__(self, name='regret_metric', **kwargs):
+        super(RegretMetric, self).__init__(name=name, **kwargs)
+        self.true_positives = self.add_weight(name='true_positives', initializer='zeros')
+        self.total_samples = self.add_weight(name='total_samples', initializer='zeros')
+
+    def update_state(self, y_true, y_pred, sample_weight=None):
+        # custom_metric_values = tf.where(K.greater(y_pred, 0.5),  1 - 2 * y_true, 2 * y_true - 1)
+        custom_metric_values = tf.where(K.greater(y_true, 0.5),
+                                        y_true - (y_pred * y_true + (1 - y_pred) * (1 - y_true)),
+                                        1 - y_true - (y_pred * y_true + (1 - y_pred) * (1 - y_true)))
+
+        true_positives = K.sum(custom_metric_values)
+        total_samples = K.cast(K.shape(y_true)[0], K.floatx())
+
+        self.true_positives.assign_add(true_positives)
+        self.total_samples.assign_add(total_samples)
+
+    def result(self):
+        return self.true_positives / self.total_samples
+
+    def reset_states(self):
+        K.batch_set_value([(v, 0) for v in self.variables])
+
+
+class F1ScoreMetric(Metric):
+    def __init__(self, name='f1_score_metric', **kwargs):
+        super(F1ScoreMetric, self).__init__(name=name, **kwargs)
+        self.true_positives = self.add_weight(name='true_positives', initializer='zeros')
+        self.false_positives = self.add_weight(name='false_positives', initializer='zeros')
+        self.false_negatives = self.add_weight(name='false_negatives', initializer='zeros')
+
+    def update_state(self, y_true, y_pred, sample_weight=None):
+        y_true = K.cast(y_true >= 0.5, dtype=K.floatx())
+        y_pred = K.cast(y_pred >= 0.5, dtype=K.floatx())
+
+        true_positives = K.sum(y_true * y_pred)
+        false_positives = K.sum((1 - y_true) * y_pred)
+        false_negatives = K.sum(y_true * (1 - y_pred))
+
+        self.true_positives.assign_add(true_positives)
+        self.false_positives.assign_add(false_positives)
+        self.false_negatives.assign_add(false_negatives)
+
+    def result(self):
+        precision = self.true_positives / (self.true_positives + self.false_positives + K.epsilon())
+        recall = self.true_positives / (self.true_positives + self.false_negatives + K.epsilon())
+        f1 = 2 * (precision * recall) / (precision + recall + K.epsilon())
+        return f1
+
+    def reset_states(self):
+        K.batch_set_value([(v, 0) for v in self.variables])
+
+
 # Compile the model
-model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+model.compile(optimizer='adam', loss='mse', metrics=['accuracy', RegretMetric(), F1ScoreMetric()])
 
 # Train the model
-history = model.fit(X_train, y_train, epochs=20, batch_size=32, validation_split=0.1)
+history = model.fit(X_train, y_train, epochs=30, batch_size=32, validation_split=0.2)
 
 # Evaluate the model
-test_loss, test_accuracy = model.evaluate(X_test, y_test)
+test_loss, test_accuracy, test_regret, test_f1 = model.evaluate(X_test, y_test)
 print(f"Test accuracy: {test_accuracy}")
+print(f"Test regret: {test_regret}")
+print(f"Test f1: {test_f1}")
 
 # Get the weights of the first layer
 weights, biases = model.layers[0].get_weights()
@@ -69,6 +129,7 @@ for i in range(N):
     value = weights_magnitude[index]
     print(f'Input {game_concepts_and_agents[index]} has a weight magnitude of {value}')
 
+
 # Function to plot accuracy over epochs
 def plot_accuracy(history):
     plt.plot(history.history['accuracy'])
@@ -78,6 +139,7 @@ def plot_accuracy(history):
     plt.xlabel('Epoch')
     plt.legend(['Train', 'Validation'], loc='upper left')
     plt.show()
+
 
 # Example usage
 plot_accuracy(history)
