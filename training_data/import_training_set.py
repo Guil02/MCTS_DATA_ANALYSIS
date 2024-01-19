@@ -18,21 +18,24 @@ def import_training_set(name):
 
     os.chdir(training_wd)
 
-    # Load data
+    # Load training set
     data = pd.read_csv(f"sets/{name}.csv")
 
     # Correct data types:
-    # - object -> string
+    # - object -> category
     # - int64 -> int32
     for col in data.columns:
         if data[col].dtype == "object":
-            # convert to string
-            data[col] = data[col].astype("string")
+            # convert to category
+            data[col] = data[col].astype("category")
         elif data[col].dtype == "int64":
             # convert to int32
             data[col] = data[col].astype("int")
 
+    # Load training weights
+    weights = pd.read_csv("weights.csv").values[:, 0]
+
     # Roll back working directory
     os.chdir(original_wd)
 
-    return data
+    return data, weights
