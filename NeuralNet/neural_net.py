@@ -39,10 +39,6 @@ model = tf.keras.models.Sequential([
     tf.keras.layers.Dense(128, activation='relu', input_shape=(X_train.shape[1],)),
     tf.keras.layers.Dropout(0.3),
     tf.keras.layers.Dense(64, activation='relu'),
-    tf.keras.layers.Dropout(0.3),
-    tf.keras.layers.Dense(64, activation='relu'),
-    tf.keras.layers.Dropout(0.3),
-    tf.keras.layers.Dense(32, activation='relu'),
     tf.keras.layers.Dense(1, activation='sigmoid')  # Assuming binary classification
 ])
 
@@ -50,31 +46,6 @@ model = tf.keras.models.Sequential([
 class RegretClassification(Metric):
     def __init__(self, name='regret_classification', **kwargs):
         super(RegretClassification, self).__init__(name=name, **kwargs)
-        self.true_positives = self.add_weight(name='true_positives', initializer='zeros')
-        self.total_samples = self.add_weight(name='total_samples', initializer='zeros')
-
-    def update_state(self, y_true, y_pred, sample_weight=None):
-        # custom_metric_values = tf.where(K.greater(y_pred, 0.5),  1 - 2 * y_true, 2 * y_true - 1)
-        custom_metric_values = tf.where(K.greater(y_true, 0.5),
-                                        y_true - (y_pred * y_true + (1 - y_pred) * (1 - y_true)),
-                                        1 - y_true - (y_pred * y_true + (1 - y_pred) * (1 - y_true)))
-
-        true_positives = K.sum(custom_metric_values)
-        total_samples = K.cast(K.shape(y_true)[0], K.floatx())
-
-        self.true_positives.assign_add(true_positives)
-        self.total_samples.assign_add(total_samples)
-
-    def result(self):
-        return self.true_positives / self.total_samples
-
-    def reset_states(self):
-        K.batch_set_value([(v, 0) for v in self.variables])
-
-
-class RegretRaw(Metric):
-    def __init__(self, name='regret_raw', **kwargs):
-        super(RegretRaw, self).__init__(name=name, **kwargs)
         self.true_positives = self.add_weight(name='true_positives', initializer='zeros')
         self.total_samples = self.add_weight(name='total_samples', initializer='zeros')
 
@@ -93,7 +64,31 @@ class RegretRaw(Metric):
     def result(self):
         return self.true_positives / self.total_samples
 
-    def reset_states(self):
+    def reset_state(self):
+        K.batch_set_value([(v, 0) for v in self.variables])
+
+
+class RegretRaw(Metric):
+    def __init__(self, name='regret_raw', **kwargs):
+        super(RegretRaw, self).__init__(name=name, **kwargs)
+        self.true_positives = self.add_weight(name='true_positives', initializer='zeros')
+        self.total_samples = self.add_weight(name='total_samples', initializer='zeros')
+
+    def update_state(self, y_true, y_pred, sample_weight=None):
+        custom_metric_values = tf.where(K.greater(y_true, 0.5),
+                                        y_true - (y_pred * y_true + (1 - y_pred) * (1 - y_true)),
+                                        1 - y_true - (y_pred * y_true + (1 - y_pred) * (1 - y_true)))
+
+        true_positives = K.sum(custom_metric_values)
+        total_samples = K.cast(K.shape(y_true)[0], K.floatx())
+
+        self.true_positives.assign_add(true_positives)
+        self.total_samples.assign_add(total_samples)
+
+    def result(self):
+        return self.true_positives / self.total_samples
+
+    def reset_state(self):
         K.batch_set_value([(v, 0) for v in self.variables])
 
 
@@ -122,7 +117,7 @@ class F1ScoreClassification(Metric):
         f1 = 2 * (precision * recall) / (precision + recall + K.epsilon())
         return f1
 
-    def reset_states(self):
+    def reset_state(self):
         K.batch_set_value([(v, 0) for v in self.variables])
 
 
@@ -150,7 +145,7 @@ class F1ScoreRaw(Metric):
         f1 = 2 * (precision * recall) / (precision + recall + K.epsilon())
         return f1
 
-    def reset_states(self):
+    def reset_state(self):
         K.batch_set_value([(v, 0) for v in self.variables])
 
 
