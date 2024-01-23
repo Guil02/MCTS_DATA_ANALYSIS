@@ -10,10 +10,9 @@ df = pd.read_csv('training_data\sets\components classification.csv')
 df.replace({True: 1, False: 0}, inplace=True)
 
 #Remove rows with Random
-df = df[(df['Selection 1'] != 'Random') & (df['Selection 2'] != 'Random')]
+df = df[(df['Selection 1 - Random'] != 1) & (df['Selection 2 - Random'] != 1)]
 
 #Encode categorical variables
-df = pd.get_dummies(df, columns=['Selection 1', 'Selection 2', 'Play-out 1', 'Play-out 2'])
 label_encoder = LabelEncoder()
 df['Most common outcome for Agent 1'] = label_encoder.fit_transform(df['Most common outcome for Agent 1'])
 
