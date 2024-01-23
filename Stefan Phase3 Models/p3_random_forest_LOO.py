@@ -3,6 +3,13 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import f1_score
 import numpy as np
 import time
+import sys
+import os
+
+file_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.join(file_dir, "..")
+
+sys.path.append(parent_dir)
 from training_data.import_training_set import import_training_set
 
 def regret_scores(true_labels, pred_labels):
@@ -76,6 +83,6 @@ print(f"Progress: {noIterations}/{noRulesets}; Time elapsed (s): {time.time() - 
 
 #Output results
 print(f"Average regret: {np.mean(regret_scores_list):.2f}")
-print(f"Minimum: {np.min(scores):.3f}\nMaximum: {np.max(scores):.3f}")
-print(f"\nUnweighted average: {np.average(scores):.3f}\nWeighted average: {np.average(scores, weights=rulesetWeights):.3f}")
-print(f"\nStd: {np.std(scores):.3f}")
+print(f"Minimum: {np.min(scores):.3f}/nMaximum: {np.max(scores):.3f}")
+print(f"/nUnweighted average: {np.average(scores):.3f}/nWeighted average: {np.average(scores, weights=rulesetWeights):.3f}")
+print(f"/nStd: {np.std(scores):.3f}")
