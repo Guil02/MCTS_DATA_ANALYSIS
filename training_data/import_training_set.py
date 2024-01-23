@@ -35,7 +35,10 @@ def import_training_set(name):
     # Load training weights
     weights = pd.read_csv("weights.csv").values[:, 0]
 
+    # Load training ruleset IDs
+    rulesetIds = pd.read_csv("rulesetIds.csv").values[:, 0].astype("str")
+
     # Roll back working directory
     os.chdir(original_wd)
 
-    return data, weights
+    return data, weights, rulesetIds
