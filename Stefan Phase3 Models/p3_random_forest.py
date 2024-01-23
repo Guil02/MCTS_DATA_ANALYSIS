@@ -3,6 +3,14 @@ from sklearn.model_selection import cross_val_score, StratifiedKFold
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import make_scorer, f1_score
+import numpy as np
+
+def regret_scores(true_labels, pred_labels):
+    expected_value = (true_labels * pred_labels + (1 - true_labels) * (1 - pred_labels))
+    regret = np.where(true_labels > 0.5, true_labels - expected_value, 1 - true_labels - expected_value)
+    
+    return regret
+
 
 df = pd.read_csv('training_data\sets\components classification.csv')
 
