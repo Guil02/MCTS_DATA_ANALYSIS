@@ -188,3 +188,5 @@ cython_debug/
 new_csv
 decision_tree_csv
 reinforcement_learning/*.csv
+!reinforcement_learning/mab_2_arms_regret_results.csv
+!reinforcement_learning/mab_61_arms_regret_results.csv
