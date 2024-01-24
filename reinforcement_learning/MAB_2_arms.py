@@ -101,7 +101,7 @@ class MAB_2_ARMS:
         sorted_cols = cols_with_1 + cols_with_2 + other_cols
         data = data[sorted_cols]
 
-        train, test = train_test_split(data, test_size=0.2, random_state=42, shuffle=True)
+        test = data
 
         # get the win rate out of the data
         # the oracle value represent the "reward" an optimal user would get for a given context
