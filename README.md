@@ -14,8 +14,7 @@ the [training_data](training_data) folder.
 The models can be found in the [models](models) folder. All the models except for the multi-armed bandit can be run by
 unpickling them. The multi armed bandit requires the user to import the csv files containing the weights. These can them
 be passed to the model which is a python class. To predict values with the model, the data provided to the model must be
-in
-the same format as [components regresssion.csv](training_data/components_regression.csv). Then model will then
+in the same format as [components regresssion.csv](training_data/components_regression.csv). Then model will then
 automatically format the data to make correct predictions.
 
 ## Authors
